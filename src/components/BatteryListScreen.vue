@@ -47,15 +47,8 @@ const displayBatteries = computed(() => {
 async function readManufacturers() {
   manufacturerOptions.value = readManufacturerRegistrations()
 
-  if (manufacturerOptions.value.length > 0 && !selectedManufacturer.value) {
-    selectedManufacturer.value = manufacturerOptions.value[0].manufacturerCode
-  }
-
   try {
     manufacturerOptions.value = await fetchManufacturerRegistrations()
-    if (manufacturerOptions.value.length > 0 && !selectedManufacturer.value) {
-      selectedManufacturer.value = manufacturerOptions.value[0].manufacturerCode
-    }
   } catch (error) {
     console.error('[BatteryList] Failed to refresh manufacturer registrations from server', error)
   }
@@ -268,6 +261,12 @@ onMounted(() => {
 
       <p v-if="loading" class="status-note">Loading passports…</p>
       <p v-else-if="errorMessage" class="error-note">{{ errorMessage }}</p>
+
+      <div v-if="paginationInfo && !productIdFilter" class="pagination-row pagination-row-top">
+        <button :disabled="currentPage === 1" class="pagination-button" @click="goToPreviousPage">Previous</button>
+        <span class="page-info">Page {{ currentPage }} of {{ paginationInfo.pages }} ({{ paginationInfo.total }} total)</span>
+        <button :disabled="currentPage === paginationInfo.pages" class="pagination-button" @click="goToNextPage">Next</button>
+      </div>
 
       <div class="table-wrap">
         <table>
@@ -494,6 +493,15 @@ td {
   margin-top: 24px;
   padding-top: 16px;
   border-top: 1px solid #e2e8f0;
+}
+
+.pagination-row-top {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding-top: 0;
+  padding-bottom: 16px;
+  border-top: none;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .pagination-button {

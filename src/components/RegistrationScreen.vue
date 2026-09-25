@@ -16,14 +16,17 @@ const errorMessage = ref('')
 
 async function loadRegistrations() {
   savedManufacturers.value = readManufacturerRegistrations()
+  errorMessage.value = ''
 
   try {
     savedManufacturers.value = await fetchManufacturerRegistrations()
   } catch (error) {
     console.error('Failed to load manufacturer registrations from server', error)
-    errorMessage.value = error instanceof Error
-      ? error.message
-      : 'Failed to load manufacturer registrations.'
+    if (savedManufacturers.value.length === 0) {
+      errorMessage.value = error instanceof Error
+        ? error.message
+        : 'Failed to load manufacturer registrations.'
+    }
   }
 }
 

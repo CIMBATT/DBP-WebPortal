@@ -37,6 +37,12 @@
           The webportal is built with Vue 3, TypeScript, Vite, and lightweight client-side routing,
           with browser storage used for local demo authentication and manufacturer configuration.
         </p>
+        <p class="detail-block">
+          Source repository:
+          <a href="https://github.com/CIMBATT/DBP-WebPortal" target="_blank" rel="noopener">
+            https://github.com/CIMBATT/DBP-WebPortal
+          </a>
+        </p>
       </article>
 
       <article class="card">
@@ -46,6 +52,16 @@
           Battery Passport specification. The passport model covers core sections such as general
           product information, material composition, performance, carbon footprint, circularity,
           supply chain due diligence, labeling, and dynamic lifecycle updates.
+        </p>
+        <p class="detail-block">
+          OPENAPI specification used:
+          <a
+            href="https://cimbatt.github.io/DBP-OpenAPI/OpenAPI/swagger/public_api/index.html"
+            target="_blank"
+            rel="noopener"
+          >
+            https://cimbatt.github.io/DBP-OpenAPI/OpenAPI/swagger/public_api/index.html
+          </a>
         </p>
       </article>
 
@@ -97,6 +113,16 @@
 
 .detail-block {
   margin-top: 16px;
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 code {

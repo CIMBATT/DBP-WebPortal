@@ -14,6 +14,28 @@ const AUTH_STORAGE_KEY = 'webportal_auth_session'
 const MANUFACTURER_STORAGE_KEY = 'manufacturer_registrations'
 const MANUFACTURER_REGISTRATION_API = '/api/manufacturer-registrations'
 
+async function parseJsonResponse<T>(response: Response, fallbackMessage: string): Promise<T> {
+  const responseText = await response.text()
+
+  try {
+    return JSON.parse(responseText) as T
+  } catch {
+    const preview = responseText.trim().slice(0, 120)
+    throw new Error(`${fallbackMessage} The server returned a non-JSON response: ${preview || '<empty response>'}`)
+  }
+}
+
+function isManufacturerRegistration(entry: unknown): entry is ManufacturerRegistration {
+  return !!entry
+    && typeof entry === 'object'
+    && 'manufacturerCode' in entry
+    && typeof entry.manufacturerCode === 'string'
+    && 'manufacturerUrl' in entry
+    && typeof entry.manufacturerUrl === 'string'
+    && (!('manufacturerApiKey' in entry) || entry.manufacturerApiKey === undefined || typeof entry.manufacturerApiKey === 'string')
+    && (!('savedAt' in entry) || entry.savedAt === undefined || typeof entry.savedAt === 'string')
+}
+
 export function readManufacturerRegistrations(): ManufacturerRegistration[] {
   try {
     const stored = localStorage.getItem(MANUFACTURER_STORAGE_KEY)
@@ -34,22 +56,18 @@ export function writeManufacturerRegistrations(registrations: ManufacturerRegist
 export async function fetchManufacturerRegistrations(): Promise<ManufacturerRegistration[]> {
   const response = await fetch(MANUFACTURER_REGISTRATION_API)
   if (!response.ok) {
-    throw new Error(`Failed to load manufacturer registrations: ${response.status}`)
+    throw new Error('Failed to load manufacturer registrations from the server.')
   }
 
-  const payload = await response.json()
+  const payload = await parseJsonResponse<unknown[]>(
+    response,
+    'Failed to load manufacturer registrations.',
+  )
   if (!Array.isArray(payload)) {
     throw new Error('Failed to load manufacturer registrations: invalid server response.')
   }
 
-  const registrations = payload.filter((entry): entry is ManufacturerRegistration => (
-    !!entry
-    && typeof entry === 'object'
-    && typeof entry.manufacturerCode === 'string'
-    && typeof entry.manufacturerUrl === 'string'
-    && (entry.manufacturerApiKey === undefined || typeof entry.manufacturerApiKey === 'string')
-    && (entry.savedAt === undefined || typeof entry.savedAt === 'string')
-  ))
+  const registrations = payload.filter(isManufacturerRegistration)
 
   writeManufacturerRegistrations(registrations)
   return registrations

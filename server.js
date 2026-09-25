@@ -42,6 +42,12 @@ async function readRegistrationsFromDisk() {
       return []
     }
 
+    if (error instanceof SyntaxError) {
+      console.warn('Manufacturer registrations file is invalid JSON. Resetting persisted registrations.')
+      await writeRegistrationsToDisk([])
+      return []
+    }
+
     throw error
   }
 }

@@ -13,6 +13,10 @@ The webportal provides:
 
 The portal is aligned with the **OPENAPI Digital Battery Passport** structure used by this project.
 
+OPENAPI specification used:
+
+- https://cimbatt.github.io/DBP-OpenAPI/OpenAPI/swagger/public_api/index.html
+
 ## Current Features
 
 ### Public screens

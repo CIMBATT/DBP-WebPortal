@@ -389,9 +389,12 @@ onUnmounted(() => {
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand-block">
-        <div class="brand-mark" aria-label="TNO logo">
-          <span class="brand-mark-tno">TNO</span>
-          <span class="brand-mark-accent" aria-hidden="true"></span>
+        <div class="brand-mark" aria-label="Battery Passport logo">
+          <span class="brand-ring brand-ring-outer" aria-hidden="true"></span>
+          <span class="brand-ring brand-ring-inner" aria-hidden="true"></span>
+          <span class="brand-cell brand-cell-top" aria-hidden="true"></span>
+          <span class="brand-cell brand-cell-bottom" aria-hidden="true"></span>
+          <span class="brand-core">BP</span>
         </div>
         <div>
           <p class="brand-label">Battery Passport</p>
@@ -409,18 +412,6 @@ onUnmounted(() => {
           <span class="nav-icon">🔍</span>
           <span class="nav-copy">
             <strong>Battery Search</strong>
-          </span>
-        </button>
-
-        <button
-          type="button"
-          class="nav-button"
-          :class="{ active: activeMenu === 'about' }"
-          @click="goToAbout"
-        >
-          <span class="nav-icon">ℹ️</span>
-          <span class="nav-copy">
-            <strong>About</strong>
           </span>
         </button>
 
@@ -447,6 +438,18 @@ onUnmounted(() => {
           <span class="nav-icon">🏭</span>
           <span class="nav-copy">
             <strong>Manufacturer Registration</strong>
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="nav-button"
+          :class="{ active: activeMenu === 'about' }"
+          @click="goToAbout"
+        >
+          <span class="nav-icon">ℹ️</span>
+          <span class="nav-copy">
+            <strong>About</strong>
           </span>
         </button>
 
@@ -548,35 +551,64 @@ onUnmounted(() => {
 
 .brand-mark {
   position: relative;
-  width: 72px;
-  height: 48px;
-  border-radius: 14px;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ffffff, #dbeafe);
-  box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.35);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.28), transparent 42%),
+    linear-gradient(145deg, #eff6ff, #dbeafe);
+  box-shadow:
+    inset 0 0 0 1px rgba(147, 197, 253, 0.4),
+    0 10px 24px rgba(15, 23, 42, 0.16);
   overflow: hidden;
 }
 
-.brand-mark-tno {
+.brand-core {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   font-weight: 800;
-  font-size: 1rem;
-  letter-spacing: 0.08em;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
   color: #0f172a;
 }
 
-.brand-mark-accent {
+.brand-ring {
   position: absolute;
-  right: -10px;
-  top: -8px;
-  width: 42px;
-  height: 64px;
+  border-radius: 999px;
+  border: 2px solid rgba(37, 99, 235, 0.95);
+}
+
+.brand-ring-outer {
+  width: 44px;
+  height: 44px;
+}
+
+.brand-ring-inner {
+  width: 28px;
+  height: 28px;
+  border-color: rgba(56, 189, 248, 0.95);
+}
+
+.brand-cell {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
   background: linear-gradient(180deg, #1d4ed8, #38bdf8);
-  transform: rotate(18deg);
-  opacity: 0.92;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
+}
+
+.brand-cell-top {
+  top: 10px;
+  right: 10px;
+}
+
+.brand-cell-bottom {
+  bottom: 10px;
+  left: 10px;
 }
 
 .brand-label {
