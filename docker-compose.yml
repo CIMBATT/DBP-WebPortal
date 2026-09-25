@@ -1,0 +1,20 @@
+services:
+  battery-portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: battery-portal
+    ports:
+      - "3000:3000"
+    volumes:
+      - battery-portal-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => { if (r.statusCode !== 200) process.exit(1) })"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  battery-portal-data:
