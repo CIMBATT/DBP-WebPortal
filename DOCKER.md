@@ -10,7 +10,7 @@ The easiest way to run the application locally:
 docker-compose up
 ```
 
-The app will be available at `http://localhost:3000`
+The app will be available at `http://localhost` (port 80)
 
 ## Manual Docker Build and Run
 
@@ -21,16 +21,16 @@ docker build -t battery-passport-portal:latest .
 
 ### Run the container:
 ```bash
-docker run -d -p 3000:3000 --name battery-portal battery-passport-portal:latest
+docker run -d -p 80:80 --name battery-portal battery-passport-portal:latest
 ```
 
-Access the app at `http://localhost:3000`
+Access the app at `http://localhost` (port 80)
 
 ## Docker Image Details
 
 - **Base Image**: `node:20-alpine` (lightweight, production-ready)
 - **Build Strategy**: Multi-stage build for minimal final image size
-- **Port**: 3000
+- **Container Port**: 80 (mapped to localhost port 80 in the examples)
 - **Health Check**: Enabled (checks every 30 seconds)
 - **Server**: `serve` (production-grade static file server)
 
@@ -94,7 +94,7 @@ Password: `password`
 
 ## Notes
 
-- The application runs on port 3000 by default
+- The container runs on port 80 by default; local Docker examples map host port 80 to it
 - All demo data is embedded in the application
 - No external database required
 - Suitable for development and production environments

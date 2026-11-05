@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const app = express()
 
-const PORT = Number(process.env.PORT || 3000)
+const PORT = Number(process.env.PORT || 80)
 const HOST = process.env.HOST || '0.0.0.0'
 const dataDirectory = process.env.DATA_DIR || path.join(__dirname, 'data')
 const registrationsFile = path.join(dataDirectory, 'manufacturer-registrations.json')
@@ -86,7 +86,7 @@ app.put('/api/manufacturer-registrations', async (req, res) => {
 
 app.use(express.static(distDirectory))
 
-app.get('*', (_req, res) => {
+app.get('/{*path}', (_req, res) => {
   res.sendFile(path.join(distDirectory, 'index.html'))
 })
 

@@ -101,7 +101,15 @@ npm install
 npm run dev
 ```
 
-By default, Vite serves the app locally at `http://localhost:5173`.
+By default, Vite serves the app locally at `http://localhost` (port 80).
+It exits if port 80 is already in use instead of selecting another port.
+For API requests during development, run the backend in a separate PowerShell
+terminal on port 3000, matching Vite's `/api` proxy:
+
+```powershell
+$env:PORT = "3000"
+npm start
+```
 
 ### Build for production
 
@@ -111,11 +119,24 @@ npm run build
 
 The production build is written to `dist/`.
 
+### Start the production server
+
+```bash
+npm start
+```
+
+The server serves the built application and API at `http://localhost` (port 80).
+Set the `PORT` environment variable to override the production server port.
+
 ### Preview the production build
 
 ```bash
 npm run preview
 ```
+
+Preview also defaults to port 80 and requires that port to be available.
+On systems that restrict low-numbered ports, appropriate permission is required
+to bind to port 80.
 
 ## Docker
 
@@ -129,10 +150,16 @@ Manual build/run:
 
 ```bash
 docker build -t battery-passport-portal:latest .
-docker run -d -p 3000:3000 --name battery-portal battery-passport-portal:latest
+docker run -d -p 80:80 --name battery-portal battery-passport-portal:latest
 ```
 
 For more details, see [DOCKER.md](./DOCKER.md).
+
+## Kubernetes
+
+The [Helm chart](./helm/README.md) deploys the webportal image with a Service,
+persistent registration storage, health probes, and optional Ingress.
+See its deployment guide for image publishing and installation commands.
 
 ## Routing
 
